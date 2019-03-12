@@ -19,11 +19,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 I will use [wine quality data set](https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv)
 from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets.html).  
-The dataset contains quality ratings (labels) for a 1599 red wine samples. 
+The dataset contains quality ratings (labels) for a wine samples. 
 The features are the wines' physical and chemical properties (11 predictors). 
 We want to use these properties to predict the quality of the wine. 
-The experiment is shown below and can be found in the 
-[AI Gallery](https://gallery.cortanaintelligence.com/Experiment/Predict-Wine-Quality-Classification-10)
 
 *Sources:* 
 
