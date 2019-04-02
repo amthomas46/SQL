@@ -1,0 +1,158 @@
+package pkg;
+
+import java.util.LinkedList; 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import javax.net.ssl.HttpsURLConnection;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+class Document {
+	public String id;
+	public String language = "en";
+    public String text;
+
+    public Document(String id, String language, String text){
+        this.id = id;
+        this.language = language;
+        this.text = text;
+    }
+}
+class Documents {
+    public List<Document> documents;
+
+    public Documents() {
+        this.documents = new ArrayList<Document>();
+    }
+    public void add(String id, String language, String text) {
+        this.documents.add (new Document (id, language, text));
+    }
+}
+
+public class Sample {
+    //For local testing:
+    public static String[] inputDataCol1 = new String[] { "1", "2", "3" };
+    public static String[] inputDataCol2 = new String[] { "i hate you", "everything is fine", "test" };
+    //Required: This is only required if you are passing data in @input_data_1
+    //from SQL Server in sp_execute_external_script
+    //Required: Input null map. Size just needs to be set to "1"
+    public static boolean[][] inputNullMap = new boolean[1][1];
+    //Required: Output data columns returned back to SQL Server
+    public static String[] outputDataCol1;
+    public static String[] outputDataCol2;
+    public static String[] outputDataCol3;
+    //Required: Output null map. Is populated with true or false values to indicate nulls
+    public static boolean[][] outputNullMap;
+    //Optional: This is only required if parameters are passed with @params
+    // from SQL Server in sp_execute_external_script
+    public static int param1; 
+    public static int numberOfRows = 3;    
+    public static short numberOfOutputCols;
+    public static String language = "en";
+    // Replace the accessKey string value with your valid access key.
+    static String accessKey = "fa8bf6d23bf641068aff37312cbb7909";    
+    static String host = "https://southcentralus.api.cognitive.microsoft.com";
+    //static String host = "http://localhost:5000";
+    static String path = "/text/analytics/v2.0/sentiment";
+    
+    //The method we will be calling from SQL Server
+    public static void main(String[] args) {
+        System.out.println("inputDataCol1.length= " + inputDataCol1.length);
+        if (inputDataCol1.length == 0) {
+            return;
+        }
+        //Using a stream to "loop" over the input data inputDataCol1.length. You can also use a for loop for this.
+        final List<InputRow> inputDataSet = IntStream.range(0, inputDataCol1.length)
+                .mapToObj(i -> new InputRow(inputDataCol1[i], inputDataCol2[i]))
+                .collect(Collectors.toList());
+        List<OutputRow> outputDataSet = new LinkedList<OutputRow>();
+        //Since we don't have any null values, we will put all values in the outputNullMap to false
+        inputDataSet.forEach(inputRow -> {
+            String res = null;
+            String jsonResult = null;
+			try {
+				Documents documents = new Documents ();
+	            documents.add(inputRow.id, language, inputRow.text);
+				res = GetSentiment(documents);
+				jsonResult = getScore(res);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println (jsonResult);
+            outputDataSet.add(new OutputRow(inputRow.id, inputRow.text, jsonResult));
+        });
+        //Print the outputDataSet
+        System.out.println(outputDataSet);
+        
+        //Set the number of rows and columns we will be returning
+        /*numberOfRows = outputDataSet.size();
+        numberOfOutputCols = 3;
+        outputDataCol1 = new String[numberOfRows]; // ID column
+        outputDataCol2 = new String[numberOfRows]; //The text column
+        outputDataCol3 = new String[numberOfRows]; //The result column
+        outputNullMap = new boolean[3][numberOfRows];
+
+        //Since we don't have any null values, we will put all values in the outputNullMap to false
+        /*IntStream.range(0, numberOfRows).forEach(i -> {
+            final OutputRow outputRow = outputDataSet.get(i);
+            outputDataCol1[i] = outputRow.id;
+            outputDataCol2[i] = outputRow.ngram;
+            outputDataCol3[i] = outputRow.ngram;
+            outputNullMap[0][i] = false;
+            outputNullMap[1][i] = false;
+            outputNullMap[2][i] = false;
+        });*/
+    }
+
+    public static String GetSentiment (Documents documents) throws Exception {
+        String text = new Gson().toJson(documents);
+        byte[] encoded_text = text.getBytes("UTF-8");
+
+        URL url = new URL(host+path);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "text/json");
+        connection.setRequestProperty("Ocp-Apim-Subscription-Key", accessKey);
+        connection.setDoOutput(true);
+
+        DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+        wr.write(encoded_text, 0, encoded_text.length);
+        wr.flush();
+        wr.close();
+
+        StringBuilder response = new StringBuilder ();
+        BufferedReader in = new BufferedReader(
+        new InputStreamReader(connection.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+            response.append(line);
+        }
+        in.close();
+
+        return response.toString();
+    }
+    
+    public static String prettify(String json_text) {
+        JsonParser parser = new JsonParser();
+        JsonObject json = parser.parse(json_text).getAsJsonObject();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(json);
+    }
+    
+    public static String getScore(String jsonLine) {
+        JsonElement jelement = new JsonParser().parse(jsonLine);
+        JsonObject  jobject = jelement.getAsJsonObject();
+        JsonArray jarray = jobject.getAsJsonArray("documents");
+        jobject = jarray.get(0).getAsJsonObject();
+        String result = jobject.get("score").getAsString();
+        return result;
+    }
+}

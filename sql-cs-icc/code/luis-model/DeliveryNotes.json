@@ -1,0 +1,314 @@
+{
+  "luis_schema_version": "3.2.0",
+  "versionId": "0.1",
+  "name": "DeliveryNotes",
+  "desc": "",
+  "culture": "en-us",
+  "tokenizerVersion": "1.0.0",
+  "intents": [
+    {
+      "name": "Instructions"
+    },
+    {
+      "name": "None"
+    }
+  ],
+  "entities": [
+    {
+      "name": "Location",
+      "children": [
+        "Destination",
+        "Origin"
+      ],
+      "roles": []
+    }
+  ],
+  "composites": [],
+  "closedLists": [],
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "prebuiltEntities": [
+    {
+      "name": "datetimeV2",
+      "roles": []
+    }
+  ],
+  "model_features": [],
+  "regex_features": [],
+  "patterns": [],
+  "utterances": [
+    {
+      "text": "5 pm arrival in chicago from detroit tomorrow",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Destination",
+          "startPos": 16,
+          "endPos": 22
+        },
+        {
+          "entity": "Location::Origin",
+          "startPos": 29,
+          "endPos": 35
+        }
+      ]
+    },
+    {
+      "text": "arriving from los angeles in atlanta on wednesday 9am",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Origin",
+          "startPos": 14,
+          "endPos": 24
+        },
+        {
+          "entity": "Location::Destination",
+          "startPos": 29,
+          "endPos": 35
+        }
+      ]
+    },
+    {
+      "text": "arriving from seattle in los angeles on thurs at noon",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Origin",
+          "startPos": 14,
+          "endPos": 20
+        },
+        {
+          "entity": "Location::Destination",
+          "startPos": 25,
+          "endPos": 35
+        }
+      ]
+    },
+    {
+      "text": "atlanta to dallas tues 5pm",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Origin",
+          "startPos": 0,
+          "endPos": 6
+        },
+        {
+          "entity": "Location::Destination",
+          "startPos": 11,
+          "endPos": 16
+        }
+      ]
+    },
+    {
+      "text": "coming to san diego from los angeles at 6 pm tomorrow",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Destination",
+          "startPos": 10,
+          "endPos": 18
+        },
+        {
+          "entity": "Location::Origin",
+          "startPos": 25,
+          "endPos": 35
+        }
+      ]
+    },
+    {
+      "text": "deliver to seattle 4pm sat. coming from detroit",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Destination",
+          "startPos": 11,
+          "endPos": 17
+        },
+        {
+          "entity": "Location::Origin",
+          "startPos": 40,
+          "endPos": 46
+        }
+      ]
+    },
+    {
+      "text": "destination is houston at 11am. beginning in new york",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Destination",
+          "startPos": 15,
+          "endPos": 21
+        },
+        {
+          "entity": "Location::Origin",
+          "startPos": 45,
+          "endPos": 52
+        }
+      ]
+    },
+    {
+      "text": "destination of san francisco on friday at 7am from portland",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Destination",
+          "startPos": 15,
+          "endPos": 27
+        },
+        {
+          "entity": "Location::Origin",
+          "startPos": 51,
+          "endPos": 58
+        }
+      ]
+    },
+    {
+      "text": "destination: atlanta by 4:30 pm sunday. beginning in miami",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Destination",
+          "startPos": 13,
+          "endPos": 19
+        },
+        {
+          "entity": "Location::Origin",
+          "startPos": 53,
+          "endPos": 57
+        }
+      ]
+    },
+    {
+      "text": "faced delays, arriving wednesday 12am from chicago. destination san francisco",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Origin",
+          "startPos": 43,
+          "endPos": 49
+        },
+        {
+          "entity": "Location::Destination",
+          "startPos": 64,
+          "endPos": 76
+        }
+      ]
+    },
+    {
+      "text": "from new york to los angeles, saturday 10 am",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Origin",
+          "startPos": 5,
+          "endPos": 12
+        },
+        {
+          "entity": "Location::Destination",
+          "startPos": 17,
+          "endPos": 27
+        }
+      ]
+    },
+    {
+      "text": "from: new york. to: atlanta day: monday 3pm",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Origin",
+          "startPos": 6,
+          "endPos": 13
+        },
+        {
+          "entity": "Location::Destination",
+          "startPos": 20,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "going to dallas from detroit wed 1pm",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Destination",
+          "startPos": 9,
+          "endPos": 14
+        },
+        {
+          "entity": "Location::Destination",
+          "startPos": 21,
+          "endPos": 27
+        }
+      ]
+    },
+    {
+      "text": "going to houston, tx from new york tomorrow 9 am",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Destination",
+          "startPos": 9,
+          "endPos": 15
+        },
+        {
+          "entity": "Location::Origin",
+          "startPos": 26,
+          "endPos": 33
+        }
+      ]
+    },
+    {
+      "text": "headed to houston from detroit sunday 12 pm",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Destination",
+          "startPos": 10,
+          "endPos": 16
+        },
+        {
+          "entity": "Location::Origin",
+          "startPos": 23,
+          "endPos": 29
+        }
+      ]
+    },
+    {
+      "text": "leaving and arriving today at 10pm , seattle to portland",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Origin",
+          "startPos": 37,
+          "endPos": 43
+        },
+        {
+          "entity": "Location::Destination",
+          "startPos": 48,
+          "endPos": 55
+        }
+      ]
+    },
+    {
+      "text": "should arrive from chicago in detroit on thurs before 4 pm",
+      "intent": "Instructions",
+      "entities": [
+        {
+          "entity": "Location::Origin",
+          "startPos": 19,
+          "endPos": 25
+        },
+        {
+          "entity": "Location::Destination",
+          "startPos": 30,
+          "endPos": 36
+        }
+      ]
+    }
+  ],
+  "settings": []
+}

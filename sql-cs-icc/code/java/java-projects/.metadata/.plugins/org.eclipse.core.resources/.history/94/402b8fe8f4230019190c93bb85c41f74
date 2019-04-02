@@ -1,0 +1,193 @@
+package pkg;
+
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import javax.net.ssl.HttpsURLConnection;
+
+//import sun.security.util.Length;
+
+public class Sample {
+
+    //For local testing:
+    public static int[] inputDataCol1 = new int[] { 1, 2, 3 };
+    //public static String[] inputDataCol2 = new String[] { "This line contains is", "This doesn't", "Java is fun" };
+    //public static String[] inputDataCol2 = new String[] { "123-45-6789", "9876-5-4321", "192-83-7465" };
+
+    public static String[] inputDataCol2 = new String[] { "i hate you", "everything is fine", "test" };
+    //Required: This is only required if you are passing data in @input_data_1
+    //from SQL Server in sp_execute_external_script
+    //public static int[] inputDataCol1 = new int[1];
+    //public static String[] inputDataCol2 = new String[1];
+
+    //Required: Input null map. Size just needs to be set to "1"
+    public static boolean[][] inputNullMap = new boolean[1][1];
+
+    //Required: Output data columns returned back to SQL Server
+    public static int[] outputDataCol1;
+    public static String[] outputDataCol2;
+    public static String[] outputDataCol3;
+
+    //Required: Output null map. Is populated with true or false values to indicate nulls
+    public static boolean[][] outputNullMap;
+
+    //Optional: This is only required if parameters are passed with @params
+    // from SQL Server in sp_execute_external_script
+    // n is giving us the size of ngram substrings
+    public static int param1; //= 3;
+    //public static String regexExpr;
+
+    //The number of rows we will be returning
+    public static int numberOfRows = 3; //Brendan do we need this?
+    //Required: Number of output columns returned
+    public static short numberOfOutputCols;
+
+
+    //Java main method
+    public static void main(String... args) {
+
+
+        //regexExpr = ". is";
+        //regexExpr = "i hate you"; //"^(\\d{3}-?\\d{2}-?\\d{4})$";
+        GetSentiment();
+
+        for(int i = 0; i < outputDataCol1.length; i++)
+        {
+            System.out.println("Id: " + outputDataCol1[i] + " Text: " + outputDataCol2[i]);
+        }
+
+
+    }
+
+/*
+    class Document {
+        public String id, text;
+    
+        public Document(String id, String text){
+            this.id = id;
+            this.text = text;
+        }
+    }
+    
+    class Documents {
+        public List<Document> documents;
+    
+        public Documents() {
+            this.documents = new ArrayList<Document>();
+        }
+        public void add(String id, String text) {
+            this.documents.add (new Document (id, text));
+        }
+    }
+*/
+    
+    // Replace the accessKey string value with your valid access key.
+    static String accessKey = "fa8bf6d23bf641068aff37312cbb7909";
+
+    // Replace or verify the region.
+    
+    // You must use the same region in your REST API call as you used to obtain your access keys.
+    // For example, if you obtained your access keys from the westus region, replace 
+    // "westcentralus" in the URI below with "westus".
+    
+    // NOTE: Free trial access keys are generated in the westcentralus region, so if you are using
+    // a free trial access key, you should not need to change this region.
+    static String host = "https://westus.api.cognitive.microsoft.com";
+    
+    // TODO replace with local host and connection to 
+    static String path = "/text/analytics/v2.0/sentiment";
+    //The method we will be calling from SQL Server
+    public static void GetSentiment() {
+
+
+        System.out.println("inputDataCol1.length= " + inputDataCol1.length);
+        if (inputDataCol1.length == 0) {
+            // TODO: Set empty return
+            return;
+        }
+
+        //System.out.println("regex: " + regexExpr);
+        //if (regexExpr.isEmpty()){
+            //regexExpr = "i hate you";
+        //"^(\\d{3}-?\\d{2}-?\\d{4})$";
+        //}
+    
+
+        //Using a stream to "loop" over the input data inputDataCol1.length. You can also use a for loop for this.
+        final List<InputRow> inputDataSet = IntStream.range(0, inputDataCol1.length)
+                .mapToObj(i -> new InputRow(inputDataCol1[i], inputDataCol2[i]))
+                .collect(Collectors.toList());
+
+        List<OutputRow> outputDataSet = new LinkedList<OutputRow>();
+
+
+        //Since we don't have any null values, we will put all values in the outputNullMap to false
+        inputDataSet.forEach(inputRow -> {
+            String res = null;
+			try {
+				res = check(inputRow.text);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            outputDataSet.add(new OutputRow(inputRow.id, inputRow.text, res));
+        });
+
+        //Print the outputDataSet
+        System.out.println(outputDataSet);
+
+        //Set the number of rows and columns we will be returning
+        numberOfRows = outputDataSet.size(); //IS THIS NEEDED?
+        numberOfOutputCols = 2;
+
+        outputDataCol1 = new int[numberOfRows]; // ID column
+        outputDataCol2 = new String[numberOfRows]; //The ngram column
+        outputNullMap = new boolean[2][numberOfRows];
+
+        //Since we don't have any null values, we will put all values in the outputNullMap to false
+        IntStream.range(0, numberOfRows).forEach(i -> {
+            final OutputRow outputRow = outputDataSet.get(i);
+            outputDataCol1[i] = outputRow.id;
+            outputDataCol2[i] = outputRow.ngram;
+            outputNullMap[0][i] = false;
+            outputNullMap[1][i] = false;
+        });
+    }
+
+
+
+    private static String check(String text) throws Exception {
+
+
+        
+        byte[] encoded_text = text.getBytes("UTF-8");
+
+        URL url = new URL(host+path);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "text/json");
+        connection.setRequestProperty("Ocp-Apim-Subscription-Key", accessKey);
+        connection.setDoOutput(true);
+
+        DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+        wr.write(encoded_text, 0, encoded_text.length);
+        wr.flush();
+        wr.close();
+
+        StringBuilder response = new StringBuilder ();
+        BufferedReader in = new BufferedReader(
+        new InputStreamReader(connection.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+            response.append(line);
+        }
+        in.close();
+
+        return response.toString();
+    }
+}
