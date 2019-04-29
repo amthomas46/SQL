@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cognitive-luis-dpl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cognitive-luis
+    spec:
+      initContainers:
+      - name: setup
+        image: ubuntu
+        command: ['/bin/sh', '-c', 'apt update; apt install -y curl; curl -X GET https://westus.api.cognitive.microsoft.com/luis/api/v2.0/package/YourAppIdHere/slot/production/gzip -H "Ocp-Apim-Subscription-Key: YourAuthoringKeyHere" -o /input/YourAppIdHere_PRODUCTION.gz']
+        volumeMounts:
+        - name: input-vol
+          mountPath: /input
+      containers:
+      - name: luis
+        image: mcr.microsoft.com/azure-cognitive-services/luis
+        args:
+        - -cpus
+        - "2"
+        - -memory
+        - 4g
+        - Eula=accept
+        - Billing=https://centralus.api.cognitive.microsoft.com/luis/v2.0
+        - ApiKey=YourKey1Here
+        ports:
+        - name: http-port
+          containerPort: 5000
+        volumeMounts:
+        - name: input-vol
+          mountPath: /input
+      volumes:
+        - name: input-vol
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cognitive-luis-svc
+spec:
+  selector:
+    app: cognitive-luis
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    targetPort: http-port
+    port: 5000
