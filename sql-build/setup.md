@@ -1,8 +1,8 @@
 # setup
 
-In this document, you'll find instructions on how to set up in order to be able to run through the Notebook in Azure Data Studio.  
+In this document, you'll find instructions on how to set up in order to be able to run through the main Notebook (.ipynb file in the code folder) in Azure Data Studio.  
 
-> Note: These instructions assume basic experience with SQL Server, LUIS, Java, and Linux.
+> Note: These instructions assume basic experience with SQL Server, LUIS, Java, Azure, and Linux.
 
 ## 1: Deploy a SQL Server 2019 Big Data Cluster  
 
@@ -87,14 +87,14 @@ kubectl cp mssql_java_lang_extension.jar <clusterName>/master-0:/home -c mssql-s
 kubectl cp WideWorldImporters-201945-18-5-13.bak <clusterName>/master-0:/var/opt/mssql/data -c mssql-server
 ```
 
-If you want to confirm that your files are there, you can bash in to the cluster and check the /home folder contents and the /var/opt/mssql/data contents.
+If you want to confirm that your files are there, you can bash in to the cluster using the command below and check the /home folder contents and the /var/opt/mssql/data contents.
 ```cmd
 kubectl exec master-0 --namespace <clusterName> -c mssql-server -it -- /bin/bash
 ```
 
 ## 8: Restore the modified WideWorldImporters database into the SQL Server master instance
 
-Finally, we need to load data to analyze into the cluster. Note that this is a slightly modified database than the standard Wide World Importers set, so you have to use the .bak provided.  
+Finally, we need to load data into the cluster. Note that this is a slightly modified database than the standard Wide World Importers set, so you have to use the .bak provided.  
 
 Using SSMS or Azure Data Studio (or other methods you prefer), restore the database into your SQL Server Big Data Cluster.  
 
@@ -106,7 +106,7 @@ If this is your first time using Azure Data Studio, you may be prompted to add a
 
 Next, you need to open the repository folder within Azure Data Studio. This is similar to how you would open a folder in VSCode, if you're familiar with that. Else, select **File > Open Folder** and navigate to the `sql-build` folder in your local.  
 
-Finally, open the `build.ipynb` file from within Azure Data Studio by selecting "Explorer" on the left panel and then the Notebook file. If this is your first time using Notebooks in Azure Data Studio, it may do some loading of things and then ask you to Reload Azure Data Studio.  
+Finally, open the `build.ipynb` file in the code folder from within Azure Data Studio by selecting "Explorer" on the left panel and then the Notebook file. If this is your first time using Notebooks in Azure Data Studio, it may do some loading of things and then ask you to Reload Azure Data Studio.  
 
 Once you're able to see the notebook, you'll need to connect it to your SQL Server master instance, by selecting the drop-down next to "Attach to" at the top of the Notebook.  
 
