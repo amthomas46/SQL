@@ -68,7 +68,7 @@ In your cloned repository, under the code folder, open the `luis-cognitive-servi
 
 In order to access the JARs, the YAML file, and restore our database into the cluster, we first have to move those files into the cluster. We can do that by using `kubectl cp` commands.   
 
-Before we get into the terminal commands, unzip the `WideWorldImporters-backup.zip` so the .bak file is in the code folder directly.  
+Before we get into the terminal commands, unzip the `WideWorldImporters-201945-18-5-13.7z` using [7zip](WideWorldImporters-201945-18-5-13) so the .bak file is in the code folder directly.  
 
 Now, open a terminal, and walk through the following steps.  
 
