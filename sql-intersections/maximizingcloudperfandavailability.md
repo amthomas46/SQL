@@ -1,7 +1,7 @@
 # Azure SQL Database: Maximizing Cloud Performance and Availability
 *This webpage is a readable version of the session presented at SQL Intersections in November 2019. Powerpoint file can be found in the slides directory.*  
 
-![Slide](./images/Slide2.png)
+![Slide](../images/Slide2.png)
 
 Thanks for joining today. This session is about how you can take what you already know about performance and availability, and apply it to your databases in Azure SQL. Additionally, we’ll share a few insights on how you can easily become the expert on perf and availability for Azure SQL.  
 
