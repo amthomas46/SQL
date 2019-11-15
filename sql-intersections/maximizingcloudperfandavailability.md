@@ -15,7 +15,7 @@ We want to start by making sure you understand the intelligent database, intelli
 
 Let’s start with a poll. How many of you would say you are already an experienced perf and tuning professional? Great. So all of you are about an inch away from being the experts for performance skills in Azure SQL.  
 
-The last aspect, recognizing real world troubleshooting patterns, is based on observations from what we’ve seen as a team on the Azure SQL product team. So, when you have issues, you typically (hopefully) open up a case with CSS. More often than not, they are able to help. If they can’t get to the bottom of it, then they escalate to the engineering team. Our team always has to have a certain number of engineers on call to manage cases that get escalated. What we’ve done today, is pick some of the themes we see and some tips we have around the mitigation and overall productive handling of it.  
+The last aspect, recognizing real world troubleshooting patterns, is based on observations from what we’ve seen as a team on the Azure SQL product team. So, when you have issues, you typically (hopefully) open up a case with CSS. More often than not, they are able to help. If they can’t get to the bottom of it, then they escalate to the engineering team. Our team always has to have a certain number of engineers on call to manage cases that get escalated. What we’ve done today, is pick some of the themes we see and some tips we have around the mitigation and overall productive handling of it.   
 
 ![Slide](./images/Slide4.PNG)
 
