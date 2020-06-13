@@ -13,3 +13,4 @@ Wondering what's here?
 - [**sql-mlads**](./sql-build/readme.md): Here you'll find the resources from a presentation "Adding AI to your SQL Server Applications with Containerized Cognitive Services" at the internal MLADS conference in Spring 2019. This presentation is similar to the sql-cs presentation above, except it goes deeper into creating LUIS models, and deploying containers with them.  
 - [**sql-pass**](./sql-pass): Here you'll find the resources from a presentation "A behind the scenes look at AI, ML, and DL" at PASS Summit and the Azure AI conference in November 2019.
 - [**sql-intersection**](./sql-intersections): Here you'll find the resources from a presentation "Azure SQL Database: Maximizing Cloud Performance and Availability" at PASS Summit, Ignite, and SQLIntersections in November 2019.
+- [**sql-w2uw**](./sql-w2uw): Here you'll find the resources from various presentations where I present Azure SQL: What to use when.  
