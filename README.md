@@ -14,3 +14,4 @@ Wondering what's here?
 - [**sql-pass**](./sql-pass): Here you'll find the resources from a presentation "A behind the scenes look at AI, ML, and DL" at PASS Summit and the Azure AI conference in November 2019.
 - [**sql-intersection**](./sql-intersections): Here you'll find the resources from a presentation "Azure SQL Database: Maximizing Cloud Performance and Availability" at PASS Summit, Ignite, and SQLIntersections in November 2019.
 - [**sql-w2uw**](./sql-w2uw): Here you'll find the resources from various presentations where I present Azure SQL: What to use when.  
+- [**sql-perfavail**](./sql-perfavail): Here you'll find the presentation with info on how to do the demos from a session with Bob Ward, "SQL Server to Azure SQL: Performance and Availability". 
