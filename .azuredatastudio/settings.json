@@ -1,0 +1,5 @@
+{
+    "dataworkspace.excludedProjects": [
+        "sql-ads/sqlprojectsex/aw-proj/aw-proj.sqlproj"
+    ]
+}

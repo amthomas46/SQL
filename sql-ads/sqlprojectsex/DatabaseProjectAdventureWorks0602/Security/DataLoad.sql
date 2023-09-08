@@ -1,0 +1,6 @@
+CREATE SCHEMA [DataLoad]
+    AUTHORIZATION [dbo];
+
+
+GO
+
